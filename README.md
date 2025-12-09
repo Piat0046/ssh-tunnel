@@ -92,7 +92,7 @@ ssh -J user@PUBLIC_HOST:PUBLIC_PORT -p REMOTE_PORT user@localhost
 | `PUBLIC_HOST` | B 서버 주소 | - |
 | `PUBLIC_USER` | B 서버 사용자명 | - |
 | `PUBLIC_PORT` | B 서버 SSH 포트 | 22 |
-| `REMOTE_PORT` | B에서 열릴 포트 | 2224 |
+| `REMOTE_PORT` | B에서 열릴 포트 | 22 |
 | `LOCAL_PORT` | C의 SSH 포트 | 22 |
 | `SSH_KEY` | SSH 키 경로 | ~/.ssh/id_rsa |
 | `SERVER_ALIVE_INTERVAL` | 연결 확인 주기 (초) | 10 |
