@@ -105,11 +105,29 @@ add_timestamp() {
 mkdir -p "$LOG_DIR"
 log_info "터널 서비스 시작 (foreground 모드)"
 
-if [ -n "$SSH_KEY" ] && [ -f "$SSH_KEY" ]; then
-    SSH_KEY_OPT="-i ${SSH_KEY}"
-else
-    SSH_KEY_OPT=""
-fi
+# SSH 인증 옵션 설정
+SSH_AUTH_OPT=""
+case "${SSH_AUTH:-key}" in
+    key)
+        if [ -n "$SSH_KEY" ] && [ -f "$SSH_KEY" ]; then
+            SSH_AUTH_OPT="-i ${SSH_KEY}"
+            log_debug "인증 방식: SSH 키 (${SSH_KEY})"
+        else
+            log_warn "SSH 키 파일을 찾을 수 없습니다: ${SSH_KEY}"
+        fi
+        ;;
+    password)
+        # 비밀번호 인증은 SSH가 자동으로 프롬프트를 표시
+        # BatchMode=no로 인터랙티브 모드 허용
+        SSH_AUTH_OPT="-o BatchMode=no -o PreferredAuthentications=password"
+        log_debug "인증 방식: 비밀번호"
+        log_warn "비밀번호 인증은 자동 재연결이 제한됩니다"
+        ;;
+    none|*)
+        SSH_AUTH_OPT=""
+        log_debug "인증 방식: 기본 (시스템 설정 사용)"
+        ;;
+esac
 
 RETRY_COUNT=0
 
@@ -123,7 +141,7 @@ while true; do
     ssh -N \
         -R ${REMOTE_PORT}:localhost:${LOCAL_PORT} \
         -p ${PUBLIC_PORT} \
-        ${SSH_KEY_OPT} \
+        ${SSH_AUTH_OPT} \
         -o "ServerAliveInterval=${SERVER_ALIVE_INTERVAL}" \
         -o "ServerAliveCountMax=${SERVER_ALIVE_COUNT_MAX}" \
         -o "ExitOnForwardFailure=no" \

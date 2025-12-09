@@ -94,10 +94,17 @@ ssh -J user@PUBLIC_HOST:PUBLIC_PORT -p REMOTE_PORT user@localhost
 | `PUBLIC_PORT` | B 서버 SSH 포트 | 22 |
 | `REMOTE_PORT` | B에서 열릴 포트 | 22 |
 | `LOCAL_PORT` | C의 SSH 포트 | 22 |
-| `SSH_KEY` | SSH 키 경로 | ~/.ssh/id_rsa |
+| `SSH_AUTH` | 인증 방식 (key/password/none) | key |
+| `SSH_KEY` | SSH 키 경로 (SSH_AUTH=key일 때) | ~/.ssh/id_rsa |
 | `SERVER_ALIVE_INTERVAL` | 연결 확인 주기 (초) | 10 |
 | `SERVER_ALIVE_COUNT_MAX` | 연결 확인 횟수 | 3 |
 | `LOG_RETENTION_DAYS` | 로그 보관 기간 (일) | 7 |
+
+### SSH 인증 방식
+
+- **key**: SSH 키 파일 사용 (권장, 자동 재연결 지원)
+- **password**: 비밀번호 인증 (최초 실행 시 입력 필요, 자동 재연결 제한)
+- **none**: 시스템 기본 설정 사용 (ssh-agent 등 이미 설정된 경우)
 
 ## 요구사항
 
