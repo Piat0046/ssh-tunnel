@@ -1,0 +1,21 @@
+# 설정 파일 (민감정보 포함)
+config.env
+
+# 자동 생성 스크립트
+.tunnel-service.sh
+.ssh-monitor.sh
+
+# macOS
+.DS_Store
+
+# 로그 파일
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Claude
+.claude/
